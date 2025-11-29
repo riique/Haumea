@@ -51,7 +51,7 @@ service cloud.firestore {
       
       // Apenas admin pode escrever
       allow write: if isAuthenticated() && 
-                      request.auth.token.email == 'henriquelenz16@gmail.com';
+                      request.auth.token.email == 'seu-email-pessoal';
     }
 
     // Shared Chats collection
