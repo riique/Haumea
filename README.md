@@ -1,198 +1,240 @@
-# Haumea
+# Haumea 🌌
 
-An open-source AI chat application built with Next.js and Firebase, featuring multiple AI models through OpenRouter.
+**Haumea** é uma plataforma de inteligência artificial open-source, moderna e multimodal, projetada para revolucionar a interação com o conhecimento. Construída com **Next.js 15** e **Firebase**, ela oferece uma experiência de chat robusta, personalizável e segura, integrando múltiplos modelos de IA de ponta através do **OpenRouter**.
 
-## Features
+![Haumea Dashboard](public/dashboard.png)
 
-- **Multi-Model Support**: Access various AI models through OpenRouter API
-- **BYOK (Bring Your Own Key)**: Use your own API keys for direct provider access
-- **Real-time Chat**: Smooth streaming responses with markdown rendering
-- **Audio Support**: Voice recording and transcription capabilities
-- **Debate Mode**: AI-powered debate discussions
-- **Study Mode**: Guided learning experiences
-- **Persona System**: Customizable AI personalities
-- **Dark/Light Theme**: Full theme support
-- **Firebase Integration**: Authentication, Firestore, and Cloud Functions
+## ✨ Funcionalidades em Destaque
 
-## Tech Stack
+### 🧠 Modos de Interação Inteligentes
+*   **Chat Livre**: Converse naturalmente com acesso a múltiplos modelos de IA (GPT-4, Claude 3.5, Llama 3, etc.).
+*   **Modo Estudo Guiado**: Um assistente pedagógico que estrutura o aprendizado passo a passo, cria planos de estudo e verifica o entendimento.
+*   **Modo Debate**: Sistema avançado onde a IA assume uma persona para debater tópicos complexos, desafiando suas ideias com argumentos estruturados e lógica rigorosa.
+*   **Personas Personalizáveis**: Crie e gerencie personas com instruções de sistema específicas (ex: "Professor de Física", "Revisor de Código", "Escritor Criativo").
 
-- **Frontend**: Next.js 15, React 19, TypeScript, TailwindCSS
-- **Backend**: Firebase Cloud Functions
-- **Database**: Firebase Firestore
-- **Authentication**: Firebase Auth
-- **AI Provider**: OpenRouter API
-- **Rendering**: Markdown, KaTeX (math), Mermaid (diagrams), Plotly (charts)
+### 🚀 Tecnologia e Performance
+*   **BYOK (Bring Your Own Key)**: Total liberdade e controle de custos. Use sua própria chave API do OpenRouter.
+*   **Streaming em Tempo Real**: Respostas geradas token a token para uma experiência fluida.
+*   **Suporte Multimodal**:
+    *   **Áudio**: Gravação de voz e transcrição automática (Whisper).
+    *   **Imagens**: Análise e interpretação de imagens (Vision).
+    *   **Arquivos**: Upload e análise de documentos PDF e texto.
+*   **Incognito Mode**: Converse sem salvar histórico local ou na nuvem.
 
-## Prerequisites
+### 🎨 Visualização Avançada
+*   **Markdown Rico**: Formatação completa de texto, tabelas e listas.
+*   **Matemática (KaTeX)**: Renderização perfeita de equações LaTeX complexas ($E=mc^2$).
+*   **Química (OpenChemLib)**: Visualização interativa de moléculas 2D e 3D via SMILES.
+*   **Gráficos (Plotly)**: Geração automática de gráficos de dados interativos (barras, linhas, dispersão).
+*   **Diagramas (Mermaid)**: Renderização de fluxogramas, diagramas de sequência e muito mais.
+*   **Code Blocks**: Realce de sintaxe para dezenas de linguagens de programação com botão de cópia rápida.
 
-- Node.js 18+
-- Firebase CLI (`npm install -g firebase-tools`)
-- Firebase project with Firestore, Authentication, and Functions enabled
-- OpenRouter API key (or individual provider keys)
+### 🛠️ Ferramentas de Produtividade
+*   **Gestão de Pastas**: Organize seus chats em pastas personalizadas.
+*   **Pesquisa Inteligente**: Busque em todo o seu histórico de conversas.
+*   **Compartilhamento**: Crie links públicos para compartilhar conversas interessantes.
+*   **Exportação**: Baixe suas conversas em formatos Markdown, JSON ou PDF.
+*   **Temas**: Alterne entre modo claro e escuro com um clique.
 
-## Getting Started
+---
 
-### 1. Clone the repository
+## 🏗️ Arquitetura e Stack Tecnológico
 
+O projeto segue uma arquitetura **Serverless** moderna, garantindo escalabilidade e baixo custo de manutenção.
+
+### Frontend (Client-Side)
+*   **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+*   **Linguagem**: TypeScript
+*   **UI Library**: [React 19](https://react.dev/)
+*   **Estilização**: Tailwind CSS + Framer Motion (animações)
+*   **Ícones**: Lucide React
+*   **Gerenciamento de Estado**: React Context API (`AuthContext`, `ThemeContext`, `DashboardContext`)
+
+### Backend (Serverless)
+*   **Runtime**: Firebase Cloud Functions (Node.js 18/20)
+*   **Banco de Dados**: Firestore (NoSQL, Real-time)
+*   **Autenticação**: Firebase Auth (Email/Senha, Google, GitHub)
+*   **Storage**: Firebase Storage (Upload de arquivos e áudios)
+
+### Integrações de IA
+*   **Provedor Principal**: [OpenRouter API](https://openrouter.ai/)
+*   **Modelos Suportados**: Acesso a todo o catálogo do OpenRouter (OpenAI, Anthropic, Meta, Mistral, Google, etc.)
+*   **Transcrição**: OpenAI Whisper (via API)
+
+---
+
+## 📂 Estrutura do Projeto
+
+```
+haumea/
+├── app/                        # Rotas e Páginas (Next.js App Router)
+│   ├── (auth)/                 # Rotas de autenticação (login, registro)
+│   ├── admin/                  # Painel administrativo
+│   └── page.tsx                # Página principal (Dashboard)
+├── components/                 # Componentes React Reutilizáveis
+│   ├── admin/                  # Componentes do painel admin
+│   ├── common/                 # Botões, inputs, toasts, ícones
+│   ├── dashboard/              # Componentes do chat (Input, Sidebar, Mensagens)
+│   │   ├── AudioRecorder.tsx   # Gravador de voz
+│   │   ├── ChatInterface.tsx   # Área principal de chat
+│   │   └── DebateInterface.tsx # Interface específica para debates
+│   └── modals/                 # Todos os modais da aplicação
+├── contexts/                   # Gerenciamento de Estado Global
+│   ├── AuthContext.tsx         # Sessão do usuário
+│   └── ThemeContext.tsx        # Tema Claro/Escuro
+├── haumea-functions/           # Backend (Firebase Cloud Functions)
+│   ├── src/
+│   │   ├── functions/          # Definição das funções serverless
+│   │   ├── middleware/         # Autenticação, CORS, Rate Limit
+│   │   └── services/           # Lógica de negócios (OpenRouter, Firestore)
+├── hooks/                      # Custom React Hooks
+│   ├── useAudioRecorder.ts     # Lógica de gravação
+│   ├── useChatData.ts          # Gerenciamento de mensagens
+│   └── useDebateMode.ts        # Lógica do modo debate
+├── lib/                        # Utilitários e Configurações
+│   ├── db/                     # Camada de cache (IndexedDB)
+│   ├── services/               # Serviços de frontend (ChatService, AudioService)
+│   └── utils/                  # Funções auxiliares (formatação, criptografia)
+└── public/                     # Assets estáticos
+```
+
+---
+
+## ☁️ Funções do Backend (Cloud Functions)
+
+O backend é composto por micro-serviços independentes hospedados no Firebase:
+
+| Função | Descrição |
+|--------|-----------|
+| `chatWithAI` | Core do chat. Processa mensagens, gerencia histórico e conecta ao OpenRouter. |
+| `debateMode` | Gerencia a lógica de turnos e personas do modo debate. |
+| `transcriptionManager` | Recebe áudio, processa e retorna transcrição (Whisper). |
+| `apiKeysManager` | Gerencia criptografia e armazenamento seguro de chaves de API dos usuários. |
+| `adminManager` | Funções restritas para administração do sistema. |
+| `openRouterCredits` | Consulta saldo e créditos da conta OpenRouter. |
+| `saveEndpoint` | Salva configurações de endpoints personalizados. |
+| `deleteUserAccount` | Remove todos os dados de um usuário (GDPR compliance). |
+
+---
+
+## 🚀 Guia de Instalação
+
+### Pré-requisitos
+*   **Node.js** (v18+)
+*   **NPM** ou **Yarn**
+*   **Firebase CLI** (`npm install -g firebase-tools`)
+*   Conta no **Firebase** e **OpenRouter**
+
+### 1. Clonar o Repositório
 ```bash
-git clone https://github.com/your-username/haumea.git
+git clone https://github.com/seu-usuario/haumea.git
 cd haumea
 ```
 
-### 2. Install dependencies
+### 2. Instalar Dependências
+Instale as dependências do frontend e do backend:
 
 ```bash
+# Frontend
 npm install
-cd haumea-functions && npm install && cd ..
+
+# Backend
+cd haumea-functions
+npm install
+cd ..
 ```
 
-### 3. Configure Firebase
+### 3. Configurar Firebase
+1.  Crie um projeto no [Firebase Console](https://console.firebase.google.com/).
+2.  Habilite **Authentication**, **Firestore**, **Functions** e **Storage**.
+3.  Login no CLI:
+    ```bash
+    firebase login
+    ```
+4.  Inicialize o projeto:
+    ```bash
+    firebase init
+    ```
+    *   Selecione: Firestore, Functions, Hosting, Storage.
+    *   Use o projeto criado anteriormente.
 
-```bash
-firebase login
-firebase init
-```
+### 4. Variáveis de Ambiente
 
-Select your Firebase project and enable:
-- Firestore
-- Functions
-- Hosting
-- Storage
-
-### 4. Set up environment variables
-
-Copy the example files and fill in your values:
-
+#### Frontend (`.env.local`)
+Copie o arquivo de exemplo:
 ```bash
 cp .env.example .env.local
+```
+Preencha com as credenciais do seu projeto Firebase (disponíveis nas configurações do projeto no console).
+
+#### Backend (`haumea-functions/.env`)
+Copie o arquivo de exemplo:
+```bash
 cp haumea-functions/.env.example haumea-functions/.env
 ```
 
-#### Frontend (.env.local)
-
-Get these values from your Firebase project settings:
-
-```env
-NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-project.firebasestorage.app
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_APP_NAME=Haumea
-```
-
-#### Backend (haumea-functions/.env)
-
-Generate an encryption key for secure API key storage:
-
+**🔐 Segurança Crítica:**
+Você precisa gerar uma chave de criptografia hexadecimal de 32 bytes para proteger as API Keys dos usuários no banco de dados.
 ```bash
-# Node.js
-node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
-
-# OpenSSL
+# Gerar chave aleatória
 openssl rand -hex 32
 ```
+Cole o valor gerado em `ENCRYPTION_KEY` no arquivo `.env`.
 
-```env
-ENCRYPTION_KEY=your_generated_64_char_hex_key
-NODE_ENV=development
-LOG_LEVEL=info
-```
-
-For production, use Firebase Secret Manager:
-
+### 5. Deploy das Regras de Segurança
+Para garantir a segurança do banco de dados e arquivos:
 ```bash
-firebase functions:secrets:set ENCRYPTION_KEY
+firebase deploy --only firestore:rules,storage:rules
 ```
 
-### 5. Deploy Firestore rules
-
-```bash
-firebase deploy --only firestore:rules
-firebase deploy --only storage:rules
-```
-
-### 6. Run locally
-
+### 6. Executar Localmente
 ```bash
 npm run dev
 ```
+Acesse: `http://localhost:3000`
 
-Open [http://localhost:3000](http://localhost:3000)
+---
 
-### 7. Deploy to production
+## 📦 Deploy em Produção
+
+Para publicar a aplicação completa (Frontend + Backend):
 
 ```bash
 npm run deploy
 ```
 
-Or deploy individually:
+Isso irá:
+1.  Buildar o frontend Next.js (exportação estática).
+2.  Compilar as funções TypeScript do backend.
+3.  Fazer upload para o Firebase Hosting e Cloud Functions.
 
-```bash
-npm run deploy:hosting    # Frontend only
-npm run deploy:functions  # Cloud Functions only
-```
+---
 
-## Project Structure
+## 🛡️ Segurança e Privacidade
 
-```
-haumea/
-├── app/                    # Next.js app router pages
-├── components/             # React components
-│   ├── admin/             # Admin panel components
-│   ├── common/            # Shared components
-│   ├── dashboard/         # Main chat interface
-│   └── modals/            # Modal dialogs
-├── contexts/              # React contexts (Auth, Theme, Dashboard)
-├── hooks/                 # Custom React hooks
-├── lib/                   # Utilities and configurations
-│   ├── config/           # App configuration
-│   ├── constants/        # Constants and model definitions
-│   ├── db/               # IndexedDB and caching
-│   └── schemas/          # Validation schemas
-├── haumea-functions/      # Firebase Cloud Functions
-│   └── src/
-│       ├── functions/    # Individual cloud functions
-│       └── middleware/   # Function middleware
-├── public/               # Static assets
-├── types/                # TypeScript type definitions
-└── System Prompts/       # AI system prompts
-```
+*   **Criptografia AES-256**: As chaves de API dos usuários são criptografadas antes de serem salvas no banco de dados.
+*   **Relação Direta**: No modo BYOK, a comunicação é feita através do seu proxy, mas você detém o controle total da chave.
+*   **Regras de Firestore**: Acesso a dados estritamente segregado por ID de usuário.
+*   **Sanitização**: Todo input/output HTML é sanitizado para prevenir XSS.
 
-## Configuration
+---
 
-### Firestore Security Rules
+## 🤝 Contribuição
 
-The project includes pre-configured security rules in `firestore.rules`. Review and customize them for your needs.
+Contribuições são bem-vindas! Sinta-se à vontade para abrir Issues ou Pull Requests.
 
-### Storage Rules
+1.  Faça um Fork do projeto
+2.  Crie sua Feature Branch (`git checkout -b feature/MinhaFeature`)
+3.  Commit suas mudanças (`git commit -m 'Adiciona MinhaFeature'`)
+4.  Push para a Branch (`git push origin feature/MinhaFeature`)
+5.  Abra um Pull Request
 
-Storage rules are in `storage.rules` for secure file uploads.
+---
 
-## Contributing
+## 📄 Licença
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+Este projeto está licenciado sob a licença **MIT** - veja o arquivo [LICENSE](LICENSE) para detalhes.
 
-## Security
+---
 
-- Never commit `.env` files with real credentials
-- Use Firebase Secret Manager for production secrets
-- API keys are encrypted at rest using AES-256-GCM
-- Review security rules before deploying
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- [OpenRouter](https://openrouter.ai/) for AI model access
-- [Firebase](https://firebase.google.com/) for backend services
-- [Next.js](https://nextjs.org/) for the React framework
-- [TailwindCSS](https://tailwindcss.com/) for styling
+Desenvolvido com ❤️ para a comunidade Open Source.
