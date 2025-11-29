@@ -1,0 +1,100 @@
+# ===================================
+# Haumea - Open Source Project
+# ===================================
+
+# ===================================
+# Dependencies
+# ===================================
+node_modules/
+.pnp/
+.pnp.js
+
+# ===================================
+# Environment & Secrets (CRITICAL)
+# ===================================
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test.local
+.env.production
+.env.production.local
+*.env
+!.env.example
+
+# ===================================
+# Build outputs
+# ===================================
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+
+# ===================================
+# Firebase
+# ===================================
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+*.local
+.firebaserc
+
+# ===================================
+# IDE & Editor
+# ===================================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ===================================
+# Debug & Logs
+# ===================================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+logs/
+*.log
+
+# ===================================
+# Test coverage
+# ===================================
+coverage/
+.nyc_output/
+
+# ===================================
+# Misc development files
+# ===================================
+*.local
+.vercel
+
+# ===================================
+# Documentation (internal/temp)
+# ===================================
+byok.html
+byok_doc.txt
+params.txt
+openrouter_docs.html
+provider-routing.txt
+provisioning-api-keys.txt
+example-old-chat.json
+models.json
+CORREÇÃO-GEMINI-TRANSCRIPTION.md
+Documentação/
+
+# ===================================
+# System files
+# ===================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini

@@ -1,0 +1,83 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Coleção de usuários
+    match /users/{userId} {
+      // Permitir leitura do próprio perfil
+      allow get: if isOwner(userId);
+      
+      // Permitir queries limitadas para verificar username/email duplicado
+      // Necessário durante o registro
+      allow list: if request.auth != null && 
+                     request.query.limit <= 1;
+      
+      // Permitir criação durante registro (quando auth.uid == userId)
+      allow create: if request.auth != null && request.auth.uid == userId;
+      
+      // Permitir atualização apenas do próprio perfil
+      allow update: if isOwner(userId);
+      
+      // Permitir deleção apenas do próprio perfil
+      allow delete: if isOwner(userId);
+
+      // Failed Transcriptions (áudios com falha na transcrição)
+      match /failed-transcriptions/{docId} {
+        // Usuário pode ler suas próprias transcrições com falha
+        allow read: if isOwner(userId);
+        // Apenas Cloud Functions podem escrever
+        allow write: if false;
+      }
+
+      // Subcoleções (chats, folders, tags, endpoints)
+      match /{document=**} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+
+    // Config collection (for admin features like force cache clear)
+    match /config/{docId} {
+      // Qualquer usuário autenticado pode ler (para verificar force cache clear)
+      allow read: if isAuthenticated();
+      
+      // Apenas admin pode escrever
+      allow write: if isAuthenticated() && 
+                      request.auth.token.email == 'henriquelenz16@gmail.com';
+    }
+
+    // Shared Chats collection
+    match /sharedChats/{shareId} {
+      // Permitir get (leitura de documento único) se usuário é owner ou membro
+      allow get: if isAuthenticated() && 
+                    (request.auth.uid == resource.data.ownerId ||
+                     request.auth.uid in resource.data.members);
+      
+      // Permitir list (queries) - Firestore valida automaticamente com where clauses
+      allow list: if isAuthenticated();
+      
+      // Permitir criação se usuário é o owner (simplificado para debug)
+      allow create: if isAuthenticated() && 
+                       request.auth.uid == request.resource.data.ownerId;
+      
+      // Permitir atualização e deleção apenas pelo owner
+      allow update, delete: if isAuthenticated() && 
+                               request.auth.uid == resource.data.ownerId;
+    }
+
+    // Invite Codes collection (apenas via Cloud Functions)
+    match /inviteCodes/{inviteId} {
+      // Bloqueio de acesso direto - apenas Cloud Functions podem acessar
+      allow read, write: if false;
+    }
+
+  }
+}

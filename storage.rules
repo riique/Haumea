@@ -1,0 +1,43 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Helper function to check if user has shared access to a chat
+    function hasSharedAccess(userId, chatId) {
+      // Check if there's an active shared chat where user is a member
+      let sharedChats = firestore.get(/databases/(default)/documents/sharedChats/$(userId + '_' + chatId));
+      return sharedChats != null && 
+             request.auth.uid in sharedChats.data.members && 
+             sharedChats.data.isActive == true;
+    }
+    
+    // Helper function to check if user has collaborative access
+    function hasCollaborativeAccess(userId, chatId) {
+      let sharedChats = firestore.get(/databases/(default)/documents/sharedChats/$(userId + '_' + chatId));
+      return sharedChats != null && 
+             request.auth.uid in sharedChats.data.members && 
+             sharedChats.data.isActive == true &&
+             sharedChats.data.shareType == 'collaborative';
+    }
+    
+    // Audio transcriptions (temporary files)
+    match /audio-transcriptions/{userId}/{fileName} {
+      // Allow authenticated users to upload/delete their own audio files
+      allow read, write, delete: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    match /users/{userId}/chats/{chatId}/{allPaths=**} {
+      // Allow read if user is owner OR has shared access
+      allow read: if request.auth != null && 
+                     (request.auth.uid == userId || hasSharedAccess(userId, chatId));
+      
+      // Allow write if user is owner OR has collaborative access
+      allow write: if request.auth != null && 
+                      (request.auth.uid == userId || hasCollaborativeAccess(userId, chatId));
+    }
+    
+    // All other paths (non-chat files)
+    match /users/{userId}/{allPaths=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}

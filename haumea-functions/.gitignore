@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Environment & Secrets (CRITICAL)
+.env
+.env.local
+.env.production
+!.env.example
+
+# Build output
+lib/
+
+# Logs
+*.log
+firebase-debug.log
+firebase-debug.*.log
+
+# IDE
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
